@@ -14,14 +14,15 @@ Constraints
 -10^9 \le x_i \le 10^9
 */
 #include <iostream>
+#include <climits>
 using namespace std;
 
 typedef long long ll;
 
 ll maximum_subarray_sum(ll n, ll *array)
 {
-    ll best = array[0], current_sum = array[0];
-    for (ll i = 1; i < n; i++)
+    ll best = LONG_MIN, current_sum = 0;
+    for (ll i = 0; i < n; i++)
     {
         current_sum = max(array[i], current_sum + array[i]);
         best = max(best, current_sum);

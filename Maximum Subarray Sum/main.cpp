@@ -1,5 +1,5 @@
 #include <iostream>
-#include <algorithm>
+#include <climits>
 using namespace std;
 
 void print_subarrays(int n, int *array)
@@ -82,7 +82,7 @@ int optimized_brute_force(int n, int *array)
 int kadane_alogorithm(int n, int *array)
 {
     // Initailize best_sum which is result and current_sum which keeps track of current sum to caluclate best sum
-    int best_sum = 0, current_sum = 0;
+    int best_sum = INT_MIN, current_sum = 0;
     for (int i = 0; i < n; i++)
     {
         // We update current sum as maximum of the element at index i and the sum of the current sum till now with element at index i. Our value rests evrytime we obtain a smaller sum
