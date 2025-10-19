@@ -9,7 +9,7 @@ void print_subarrays(int n, int *array)
     2. Pickup and match Ending index and constant starting index combinations to produce all possible subarrays
     3. Iterate over the subarray with a given starting index and ending index
 
-    ##### total subarrays = [n(n+1)]/2 #####
+    total subarrays = [n(n+1)]/2
     */
 
     // The starting index of the subarray
