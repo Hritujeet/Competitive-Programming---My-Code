@@ -2,7 +2,6 @@
 #include <vector>
 
 using namespace std;
-typedef long long ll;
 
 void merge(vector<int> &array, int st, int mid, int end)
 {
