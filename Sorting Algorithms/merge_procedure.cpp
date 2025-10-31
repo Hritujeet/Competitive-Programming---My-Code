@@ -47,6 +47,7 @@ void merge_procedure(ll a[], ll b[], ll m, ll n)
     }
 
     print_array(m + n, newArray);
+    delete newArray;
 }
 
 int main()
