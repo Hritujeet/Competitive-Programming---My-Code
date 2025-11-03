@@ -21,9 +21,9 @@ void print_subarrays(int n, int *array)
             cout << "["; // Start of the subarray
 
             // Loop to print the elements from the start index (i) to the end index (j)
-            for (int k = i; k <= j; k++) // FIX 1: Use k <= j to include the element at index j
+            for (int k = i; k <= j; k++) // Use k <= j to include the element at index j
             {
-                cout << array[k]; // FIX 2: Print the VALUE at index k
+                cout << array[k]; // Print the VALUE at index k
 
                 // Print a comma and space unless it's the last element of the subarray
                 if (k < j)
