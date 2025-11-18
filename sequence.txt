@@ -1,0 +1,6 @@
+1. Kadane's algorithm
+2. Sorting Algorithms
+3. Binary Search
+4. Data Structures
+5. Problems on Binary Search
+5. Greedy Algorithms
