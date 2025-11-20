@@ -1,85 +1,125 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <queue> // Required for priority_queue (Min-Heap)
+#include <queue> // We use priority_queue to maintain a min-heap of leaving times
 
 using namespace std;
 typedef long long ll;
 
+/*
+    Each customer has:
+        a → ARRIVAL time
+        b → LEAVING time
+
+    We will treat each customer as an interval [a, b].
+*/
 struct Customer
 {
     ll a; // Arrival time
     ll b; // Leaving time
 };
 
-// **CRITICAL CHANGE 1: Must sort by arrival time (a)**
+/*
+    Comparator for sorting customers:
+        - First sort by arrival time (a)
+        - If arrival times are equal, sort by leaving time (b)
+    This ensures customers are processed in the exact order they arrive.
+*/
 bool compare(const Customer &x, const Customer &y)
 {
-    // If arrival times are the same, tie-break on earlier leaving time (optional but good practice)
-    if (x.a != y.a) {
+    if (x.a != y.a)
         return x.a < y.a;
-    }
-    return x.b < y.b; 
+    return x.b < y.b;
 }
 
+/*
+    Core idea (Sweep Line + Min-Heap):
+
+    - After sorting by arrival time:
+        When a new customer arrives:
+            → first remove all customers who have ALREADY LEFT
+            → then add this customer to the count
+
+    - We use a MIN-HEAP (priority_queue with greater<ll>):
+        Because the smallest leaving time must be checked first.
+        This tells us which customer leaves next.
+
+    - The heap size at any moment = number of customers currently in the restaurant.
+
+    - The maximum heap size during the entire process is our answer.
+*/
 void solve(Customer *customers, ll n)
 {
-    // 1. Sort customers by arrival time
+    // Step 1: Sort customers based on arrival time
     sort(customers, customers + n, compare);
-    
-    // **CRITICAL CHANGE 2: Use a Min-Heap (Priority Queue)**
-    // The heap stores the LEAVING TIMES (b) of all currently active customers.
-    // We need the MINIMUM leaving time at the top to check who leaves earliest.
-    priority_queue<ll, vector<ll>, greater<ll>> leaving_times_min_heap;
-    
-    ll max_customers = 0;
 
-    // 2. Iterate through customers sorted by arrival
+    /*
+        Min-Heap storing LEAVING TIMES of all customers currently inside.
+        Why leaving times?
+            → The one who leaves earliest must be popped first.
+            → So we can efficiently remove all gone customers.
+    */
+    priority_queue<ll, vector<ll>, greater<ll>> leaving_times_min_heap;
+
+    ll max_customers = 0; // Stores the maximum number of overlapping customers
+
+    // Step 2: Process customers in arrival order
     for (ll i = 0; i < n; i++)
     {
         ll arrival_time = customers[i].a;
         ll leaving_time = customers[i].b;
 
-        // **CRITICAL CHANGE 3: Use a WHILE loop to clear out ALL departed customers**
-        // Remove customers whose leaving time is less than or equal to the current customer's arrival time.
-        while (!leaving_times_min_heap.empty() && leaving_times_min_heap.top() <= arrival_time)
+        /*
+            BEFORE adding this customer:
+
+            Remove ALL customers whose leaving time is ≤ arrival_time.
+
+            Explanation:
+                If someone leaves at time = 5 and another arrives at time = 5,
+                they DO NOT overlap → so remove them first.
+        */
+        while (!leaving_times_min_heap.empty() &&
+               leaving_times_min_heap.top() <= arrival_time)
         {
             leaving_times_min_heap.pop();
         }
 
-        // 3. Add the current customer's leaving time (they just arrived)
+        // Step 3: Add this customer's leaving time to the heap
         leaving_times_min_heap.push(leaving_time);
 
-        // 4. Update the maximum count
-        // The heap size represents the current number of overlapping customers.
+        /*
+            Step 4: Update the maximum active customers.
+            The heap size shows how many customers are currently inside.
+        */
         max_customers = max(max_customers, (ll)leaving_times_min_heap.size());
     }
 
+    // Final answer
     cout << max_customers << endl;
 }
 
 int main()
 {
-    // Recommended competitive programming setup for fast I/O
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
     ll n;
-    if (!(cin >> n)) return 0;
-    
-    // Use a vector instead of a raw array for better C++ practice
-    // (though using a raw array with `new` is fine for this context)
+    cin >> n;
+
+    // Dynamically allocate an array of customers
     Customer *customers = new Customer[n];
 
+    // Read all customers (arrival, leaving)
     for (ll i = 0; i < n; i++)
     {
         cin >> customers[i].a >> customers[i].b;
     }
 
+    // Compute maximum overlap
     solve(customers, n);
 
-    // Clean up memory
-    delete[] customers; 
+    // Free memory
+    delete[] customers;
 
     return 0;
 }
