@@ -12,7 +12,12 @@ int main()
     marks["Amitabh Bachchan"] = 75;
     marks["Carryminati"] = 43;
 
-    if (marks.count("Hritujeet"))
+    cout << marks.size();
+    marks.insert({"Harry", 100});
+    cout << marks.size();
+
+
+    if (marks.count("Hritujeet") > 0)
     {
         cout << "Oh Yeah" << endl;
     }
