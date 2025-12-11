@@ -1,5 +1,5 @@
 1. Kadane's algorithm -> Done
-2. Sorting Algorithms 
+2. Sorting Algorithms -> Done
 3. Binary Search -> Done
 4. Data Structures -> Done
 5. Problems on Binary Search
