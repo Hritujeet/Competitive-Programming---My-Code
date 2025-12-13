@@ -2,6 +2,6 @@
 2. Sorting Algorithms -> Done
 3. Binary Search -> Done
 4. Data Structures -> Done
-5. Problems on Binary Search
+5. Problems on Binary Search -> Done
 5. Greedy Algorithms
 6. Dynamic Programming 
